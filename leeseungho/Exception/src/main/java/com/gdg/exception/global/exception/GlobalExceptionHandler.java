@@ -1,6 +1,5 @@
 package com.gdg.exception.global.exception;
 
-import jakarta.transaction.NotSupportedException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -61,21 +60,11 @@ public class GlobalExceptionHandler {
                 .status(errorCode.getStatus())
                 .body(ErrorResponse.from(errorCode));
     }
-    // URL
+    // 존재하지 않는 URL 요청 처리
     @ExceptionHandler(NoResourceFoundException.class)
     public ResponseEntity<ErrorResponse> handleNoResourceFoundException(NoResourceFoundException e) {
         ErrorCode errorCode = ErrorCode.URL_NOT_FOUND;
-        log.warn("[NoResourceFoundException] message: {}", e.getMessage());
-
-        return ResponseEntity
-                .status(errorCode.getStatus())
-                .body(ErrorResponse.from(errorCode));
-    }
-
-    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ResponseEntity<ErrorResponse> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
-        ErrorCode errorCode = ErrorCode.PATH_MISMATCH;
-        log.warn("[MethodArgumentTypeMismatchException] message: {}", e.getMessage());
+        //log.warn("[NoResourceFoundException] message: {}", e.getMessage());
 
         return ResponseEntity
                 .status(errorCode.getStatus())
@@ -86,7 +75,18 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResponseEntity<ErrorResponse> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
         ErrorCode errorCode = ErrorCode.METHOD_NOT_SUPPORT;
-        log.warn("[HttpRequestMethodNotSupportException] message: {}", errorCode.getMessage());
+        //log.warn("[HttpRequestMethodNotSupportException] message: {}", e.getMessage());
+
+        return ResponseEntity
+                .status(errorCode.getStatus())
+                .body(ErrorResponse.from(errorCode));
+    }
+
+    // 경로 변수에 잘못된 타입 값 요청 처리
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ErrorResponse> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
+        ErrorCode errorCode = ErrorCode.TYPE_MISMATCH;
+        //log.warn("[MethodArgumentTypeMismatchException] message: {}", e.getMessage());
 
         return ResponseEntity
                 .status(errorCode.getStatus())
@@ -96,8 +96,8 @@ public class GlobalExceptionHandler {
     // 지원하지 않는 Content-Type 요청 처리
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
     public ResponseEntity<ErrorResponse> handleHttpMediaTypeNotSupportedException(HttpMediaTypeNotSupportedException e) {
-        ErrorCode errorCode = ErrorCode.TEXT_NOT_SUPPORT;
-        log.warn("[HttpMediaTypeNotSupportedException] message: {}", e.getMessage());
+        ErrorCode errorCode = ErrorCode.MEDIA_NOT_SUPPORT;
+        //log.warn("[HttpMediaTypeNotSupportedException] message: {}", e.getMessage());
 
         return ResponseEntity
                 .status(errorCode.getStatus())

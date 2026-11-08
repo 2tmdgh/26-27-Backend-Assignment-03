@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class ErrorResponse {
 
-    private final String code;
+    private final String errorCode;
     private final String message;
 
     public static ErrorResponse from(ErrorCode errorCode) {
